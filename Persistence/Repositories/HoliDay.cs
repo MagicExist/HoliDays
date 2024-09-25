@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace Persistence.Repositories
 {
-    public class HolyDay :IHolyDays
+    public class HoliDay :IHoliDays
     {
         private readonly FestivosContext _context;
 
-        public HolyDay(FestivosContext context) 
+        public HoliDay(FestivosContext context) 
         {
             _context = context;
         }
