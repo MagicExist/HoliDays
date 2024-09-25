@@ -8,7 +8,7 @@ namespace Persistence.DbHelpers
 {
     public static class HoliDaysHelper
     {
-        public static DateTime ObtenerInicioSemanaSanta(int Año)
+        public static DateTime GetPalmSunday(int Año)
         {
             int a = Año % 19;
             int b = Año % 4;
@@ -26,18 +26,18 @@ namespace Persistence.DbHelpers
             }
             return new DateTime(Año, mes, dia);
         }
-        public static DateTime AgregarDias(DateTime fecha, int dias)
+        public static DateTime AddDays(DateTime fecha, int dias)
         {
             return fecha.AddDays(dias);
         }
-        public static DateTime SiguienteLunes(DateTime fecha)
+        public static DateTime NextMonday(DateTime fecha)
         {
             DayOfWeek diaSemana = fecha.DayOfWeek;
             if (diaSemana != DayOfWeek.Monday)
             {
                 if (diaSemana > DayOfWeek.Monday)
                 {
-                    fecha = AgregarDias(fecha, 8 - (int)diaSemana);
+                    fecha = AddDays(fecha, 8 - (int)diaSemana);
                 }
                 else
                 {
