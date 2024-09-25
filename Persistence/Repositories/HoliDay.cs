@@ -5,7 +5,7 @@ using Persistence.DbHelpers;
 
 namespace Persistence.Repositories
 {
-    public class HoliDay :IHoliDays
+    public class HoliDay : IHoliDays
     {
         private readonly FestivosContext _context;
 
@@ -15,7 +15,7 @@ namespace Persistence.Repositories
         }
 
 
-        public async Task<IEnumerable<Festivo>> GetHolyDaysAsync(int year)
+        public async Task<Festivo[]> GetHolyDaysAsync(int year)
         {
             var holidayList = await _context.Festivos.ToArrayAsync();
             return HoliDaysHelper.GetHolyDayList(year, holidayList);

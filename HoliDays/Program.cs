@@ -1,9 +1,11 @@
+using Application.Extentions;
 using Persistence.Extentions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.PersistenceService(builder.Configuration);
+builder.Services.ApplicationService();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

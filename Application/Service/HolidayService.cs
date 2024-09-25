@@ -12,7 +12,7 @@ namespace Application.Service
             _holiDayRepository = holiDayRepository;
         }
 
-        public async Task<IEnumerable<Festivo>> GetHolyDaysAsync(int year)
+        public async Task<Festivo[]> GetHolyDaysAsync(int year)
         {
             return await _holiDayRepository.GetHolyDaysAsync(year);
         }
