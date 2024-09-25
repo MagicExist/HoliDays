@@ -70,14 +70,14 @@ namespace Persistence.DbHelpers
                         break;
                     case 3:
                         holidayBaseOnSundayEaster = new DateTime(year, sundayEaster.Month, sundayEaster.Day);
-                        holidayBaseOnSundayEaster.AddDays(holiday.DiasPascua);
+                        holidayBaseOnSundayEaster =  holidayBaseOnSundayEaster.AddDays(holiday.DiasPascua);
                         holiday.Dia = holidayBaseOnSundayEaster.Day;
                         holiday.Mes = holidayBaseOnSundayEaster.Month;
                         break;
                     case 4:
 
                         holidayBaseOnSundayEaster = new DateTime(year, sundayEaster.Month, sundayEaster.Day);
-                        holidayBaseOnSundayEaster.AddDays(holiday.DiasPascua);
+                        holidayBaseOnSundayEaster = holidayBaseOnSundayEaster.AddDays(holiday.DiasPascua);
 
                         currentDate = new DateTime(year, holidayBaseOnSundayEaster.Month, holidayBaseOnSundayEaster.Day);
                         currentDate = NextMonday(currentDate);

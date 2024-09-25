@@ -9,7 +9,7 @@ namespace Domain.Repository
 {
     public interface IHoliDays
     {
-        Task<IEnumerable<Festivo>> GetHolyDaysAsync(int year);
+        Task<Festivo[]> GetHolyDaysAsync(int year);
         Task<bool> IsHolyDay(DateTime date);
 
     }
