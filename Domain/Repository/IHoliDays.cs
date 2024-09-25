@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Repository
 {
-    public interface IHolyDays
+    public interface IHoliDays
     {
         Task<IEnumerable<Festivo>> GetHolyDaysAsync(int year);
         Task<bool> IsHolyDay(DateTime date);

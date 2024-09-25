@@ -1,4 +1,6 @@
-﻿using System;
+﻿using HoliDays.Models;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +10,7 @@ namespace Persistence.DbHelpers
 {
     public static class HoliDaysHelper
     {
-        public static DateTime ObtenerInicioSemanaSanta(int Año)
+        public static DateTime GetPalmSunday(int Año)
         {
             int a = Año % 19;
             int b = Año % 4;
@@ -26,18 +28,18 @@ namespace Persistence.DbHelpers
             }
             return new DateTime(Año, mes, dia);
         }
-        public static DateTime AgregarDias(DateTime fecha, int dias)
+        public static DateTime AddDays(DateTime fecha, int dias)
         {
             return fecha.AddDays(dias);
         }
-        public static DateTime SiguienteLunes(DateTime fecha)
+        public static DateTime NextMonday(DateTime fecha)
         {
             DayOfWeek diaSemana = fecha.DayOfWeek;
             if (diaSemana != DayOfWeek.Monday)
             {
                 if (diaSemana > DayOfWeek.Monday)
                 {
-                    fecha = AgregarDias(fecha, 8 - (int)diaSemana);
+                    fecha = AddDays(fecha, 8 - (int)diaSemana);
                 }
                 else
                 {
@@ -46,6 +48,48 @@ namespace Persistence.DbHelpers
 
             }
             return fecha;
+        }
+
+        public static Festivo[] GetHolyDayList(int year, Festivo[] holidayList) 
+        {
+            var sundayEaster = GetPalmSunday(year).AddDays(7);
+            DateTime currentDate = new DateTime();
+            DateTime holidayBaseOnSundayEaster = new DateTime();
+
+            foreach (var holiday in holidayList)
+            {
+                switch (holiday.IdTipo)
+                {
+                    case 1:
+                        break;
+                    case 2:
+                        currentDate = new DateTime(year, holiday.Mes, holiday.Dia);
+                        currentDate = NextMonday(currentDate);
+                        holiday.Dia = currentDate.Day;
+                        holiday.Mes = currentDate.Month;
+                        break;
+                    case 3:
+                        holidayBaseOnSundayEaster = new DateTime(year, sundayEaster.Month, sundayEaster.Day);
+                        holidayBaseOnSundayEaster.AddDays(holiday.DiasPascua);
+                        holiday.Dia = holidayBaseOnSundayEaster.Day;
+                        holiday.Mes = holidayBaseOnSundayEaster.Month;
+                        break;
+                    case 4:
+
+                        holidayBaseOnSundayEaster = new DateTime(year, sundayEaster.Month, sundayEaster.Day);
+                        holidayBaseOnSundayEaster.AddDays(holiday.DiasPascua);
+
+                        currentDate = new DateTime(year, holidayBaseOnSundayEaster.Month, holidayBaseOnSundayEaster.Day);
+                        currentDate = NextMonday(currentDate);
+                        holiday.Dia = currentDate.Day;
+                        holiday.Mes = currentDate.Month;
+                        break;
+
+                    
+                }
+            }
+
+            return holidayList;
         }
     }
 }
