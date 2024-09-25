@@ -1,4 +1,6 @@
-﻿using System;
+﻿using HoliDays.Models;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -46,6 +48,48 @@ namespace Persistence.DbHelpers
 
             }
             return fecha;
+        }
+
+        public static Festivo[] GetHolyDayList(int year, Festivo[] holidayList) 
+        {
+            var sundayEaster = GetPalmSunday(year).AddDays(7);
+            DateTime currentDate = new DateTime();
+            DateTime holidayBaseOnSundayEaster = new DateTime();
+
+            foreach (var holiday in holidayList)
+            {
+                switch (holiday.IdTipo)
+                {
+                    case 1:
+                        break;
+                    case 2:
+                        currentDate = new DateTime(year, holiday.Mes, holiday.Dia);
+                        currentDate = NextMonday(currentDate);
+                        holiday.Dia = currentDate.Day;
+                        holiday.Mes = currentDate.Month;
+                        break;
+                    case 3:
+                        holidayBaseOnSundayEaster = new DateTime(year, sundayEaster.Month, sundayEaster.Day);
+                        holidayBaseOnSundayEaster.AddDays(holiday.DiasPascua);
+                        holiday.Dia = holidayBaseOnSundayEaster.Day;
+                        holiday.Mes = holidayBaseOnSundayEaster.Month;
+                        break;
+                    case 4:
+
+                        holidayBaseOnSundayEaster = new DateTime(year, sundayEaster.Month, sundayEaster.Day);
+                        holidayBaseOnSundayEaster.AddDays(holiday.DiasPascua);
+
+                        currentDate = new DateTime(year, holidayBaseOnSundayEaster.Month, holidayBaseOnSundayEaster.Day);
+                        currentDate = NextMonday(currentDate);
+                        holiday.Dia = currentDate.Day;
+                        holiday.Mes = currentDate.Month;
+                        break;
+
+                    
+                }
+            }
+
+            return holidayList;
         }
     }
 }

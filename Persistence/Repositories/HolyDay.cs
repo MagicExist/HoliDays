@@ -20,52 +20,19 @@ namespace Persistence.Repositories
             _context = context;
         }
 
+
         public async Task<IEnumerable<Festivo>> GetHolyDaysAsync(int year)
         {
             var holidayList = await _context.Festivos.ToArrayAsync();
-            var sundayEaster = HoliDaysHelper.GetPalmSunday(year).AddDays(7);
-            DateTime currentDate = new DateTime();
-            DateTime holidayBaseOnSundayEaster = new DateTime();
-
-            foreach (var holiday in holidayList) 
-            {
-                switch (holiday.IdTipo)
-                {
-                    case 1:
-                        break;
-                    case 2:
-                        currentDate = new DateTime(year, holiday.Mes, holiday.Dia);
-                        currentDate = HoliDaysHelper.NextMonday(currentDate);
-                        holiday.Dia = currentDate.Day;
-                        holiday.Mes = currentDate.Month;
-                        break;
-                    case 3:
-                        holidayBaseOnSundayEaster = new DateTime(year, sundayEaster.Month, sundayEaster.Day);
-                        holidayBaseOnSundayEaster.AddDays(holiday.DiasPascua);
-                        holiday.Dia = holidayBaseOnSundayEaster.Day;
-                        holiday.Mes = holidayBaseOnSundayEaster.Month;
-                        break;
-                    case 4:
-
-                        holidayBaseOnSundayEaster = new DateTime(year, sundayEaster.Month, sundayEaster.Day);
-                        holidayBaseOnSundayEaster.AddDays(holiday.DiasPascua);
-
-                        currentDate = new DateTime(year, holidayBaseOnSundayEaster.Month, holidayBaseOnSundayEaster.Day);
-                        currentDate = HoliDaysHelper.NextMonday(currentDate);
-                        holiday.Dia = currentDate.Day;
-                        holiday.Mes = currentDate.Month;
-                        break;
-                    
-
-                }
-            }
-
-            return holidayList;
+            return HoliDaysHelper.GetHolyDayList(year, holidayList);
         }
 
-        public Task<bool> IsHolyDay(DateTime date)
+        public async Task<bool> IsHolyDay(DateTime date)
         {
-            throw new NotImplementedException();
+            var holidayList = await _context.Festivos.ToArrayAsync();
+            holidayList = HoliDaysHelper.GetHolyDayList(date.Year, holidayList);
+            var isHoliday = holidayList.Any(holiday => holiday.Dia == date.Day && holiday.Mes == date.Month);
+            return isHoliday;
         }
     }
 }
