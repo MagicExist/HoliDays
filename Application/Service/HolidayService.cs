@@ -1,4 +1,5 @@
 ﻿
+using Application.DTOs;
 using Domain.Repository;
 using HoliDays.Models;
 
@@ -12,9 +13,23 @@ namespace Application.Service
             _holiDayRepository = holiDayRepository;
         }
 
-        public async Task<Festivo[]> GetHolyDaysAsync(int year)
+        public async Task<LinkedList<FestivoDTO>> GetHolyDaysAsync(int year)
         {
-            return await _holiDayRepository.GetHolyDaysAsync(year);
+            var holidayList = await _holiDayRepository.GetHolyDaysAsync(year);
+            LinkedList<FestivoDTO> holidayDTOList = new LinkedList<FestivoDTO>();
+            foreach(var holiday in holidayList)
+            {
+                var holidayDTO = new FestivoDTO 
+                {
+                    Id = holiday.Id,
+                    Nombre = holiday.Nombre,
+                    Dia = holiday.Dia,
+                    Mes = holiday.Mes,
+                    IdTipo = holiday.IdTipo,    
+                };
+                holidayDTOList.AddLast(holidayDTO);
+            }
+            return holidayDTOList;
         }
 
         public async Task<bool> IsHolyDay(DateTime date)
