@@ -1,4 +1,5 @@
-﻿using Application.Service;
+﻿using Application.DTOs;
+using Application.Service;
 using HoliDays.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,8 +18,8 @@ namespace HoliDays.Controllers
         [HttpGet("GetHolidayAsync/{year}")]
         public async Task<IActionResult> GetHolyDaysAsync(int year)
         {
-            Festivo[] holidayList = await _holidayService.GetHolyDaysAsync(year);
-            if (holidayList == null || holidayList.Length <= 0)
+            LinkedList<FestivoDTO> holidayList = await _holidayService.GetHolyDaysAsync(year);
+            if (holidayList == null || holidayList.Count <= 0)
             {
                 return NotFound();
             }
