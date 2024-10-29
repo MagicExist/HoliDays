@@ -32,11 +32,11 @@ namespace HoliDays.Controllers
             bool isHoliday = await _holidayService.IsHolyDay(date);
             if (isHoliday) 
             {
-                return Ok(new {response = "Yeah is Holiday"});
+                return Ok(new { message = "Yeah is Holiday" });
             }
             else 
             {
-                return Ok(new {response = "No is not a Holiday"});
+                return Ok(new {message = "No is not a Holiday"});
             }
         }
     }
